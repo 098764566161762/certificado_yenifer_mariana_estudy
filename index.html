@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Certificados Estudiantiles</title>
+    <style>
+        /* Estilos CSS con tema rosado */
+        body {
+            font-family: 'Times New Roman', serif;
+            background-color: #fff0f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            border: 2px solid #ff69b4;
+        }
+
+        h1 {
+            color: #db7093;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #c71585;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ffb6c1;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #fffafafa;
+        }
+
+        button {
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #db7093;
+        }
+
+        .certificate {
+            background-color: white;
+            padding: 30px;
+            border: 15px solid #ffb6c1;
+            display: none;
+            margin-top: 20px;
+            position: relative;
+            background-image: linear-gradient(to bottom, #fffafafa, #fff0f5);
+        }
+
+        .certificate-header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #c71585;
+        }
+
+        .certificate-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .certificate-subtitle {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #db7093;
+        }
+
+        .certificate-body {
+            margin-bottom: 30px;
+        }
+
+        .student-name {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            color: #c71585;
+        }
+
+        .signature-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .signature-line {
+            border-top: 1px solid #ff69b4;
+            width: 200px;
+            margin: 0 auto;
+            padding-top: 5px;
+        }
+
+        .signature-preview {
+            max-width: 200px;
+            max-height: 100px;
+            margin: 10px auto;
+            display: none;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            text-align: center;
+            color: #db7093;
+        }
+
+        .download-btn {
+            margin-top: 20px;
+            background-color: #ff1493;
+        }
+
+        .download-btn:hover {
+            background-color: #c71585;
+        }
+
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 10px;
+            background-color: #ff69b4;
+            color: white;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .file-input-label:hover {
+            background-color: #db7093;
+        }
+
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        @media print {
+            .form-container, button, .file-input-container {
+                display: none;
+            }
+            .certificate {
+                display: block !important;
+                border: none;
+                padding: 0;
+                background-image: none;
+            }
+            .signature-preview {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1>Generador de Certificados Estudiantiles</h1>
+            <div class="form-group">
+                <label for="nombre">Nombre Completo del Estudiante:</label>
+                <input type="text" id="nombre" placeholder="Ej: Duvan Felipe Jaramillo Raigoza">
+            </div>
+            <div class="form-group">
+                <label for="documento">Número de Documento:</label>
+                <input type="text" id="documento" placeholder="Ej: 1.032.098.057">
+            </div>
+            <div class="form-group">
+                <label>Subir Firma del Jefe de Registro y Control:</label>
+                <div class="file-input-container">
+                    <label class="file-input-label" for="firmaInput">Seleccionar imagen de firma</label>
+                    <input type="file" id="firmaInput" class="file-input" accept="image/*">
+                </div>
+                <img id="firmaPreview" class="signature-preview" alt="Vista previa de la firma">
+            </div>
+            <button id="generarBtn">Generar Certificado</button>
+        </div>
+
+        <div id="certificado" class="certificate">
+            <div class="certificate-header">
+                <div class="certificate-title">REGISTRO Y CONTROL CESDE</div>
+                <div class="certificate-subtitle">
+                    LICENCIA DE FUNCIONAMIENTO DE LA SECRETARÍA DE EDUCACIÓN<br>
+                    DEL MUNICIPIO DE LA PINTADA 2020060127237 DE 2020-12-02<br>
+                    RESOLUCIÓN OFICIAL DEL PROGRAMA 2021060010827 DE 2021-05-20<br>
+                    NIT. 890.913.319-1
+                </div>
+            </div>
+
+            <div style="text-align: right; color: #db7093;">
+                La Pintada, <span id="fechaCertificado"></span>
+            </div>
+
+            <div class="certificate-body">
+                <div style="text-align: center; font-weight: bold; margin-bottom: 20px; color: #c71585;">
+                    LA JEFE DE REGISTRO Y CONTROL<br>
+                    CERTIFICA:
+                </div>
+
+                <p style="color: #555;">
+                    Que <span id="certNombre" class="student-name"></span>, identificado con documento número
+                    <span id="certDocumento" style="font-weight: bold; color: #c71585;"></span>, ha completado satisfactoriamente sus estudios en nuestra institución para el período 1-2025 se encuentra cursando el primero de tres
+                    módulos académicos, correspondientes al programa Técnico Laboral por
+                    Competencias en Auxiliar en Desarrollo de Aplicaciones Informáticas, con una
+                    intensidad del período de 255 horas teórico-prácticas para un total del programa de 694
+                    horas.
+                    La fecha de inicio para el semestre 1-2025 pactada por la Institución es para el 10 de
+                    febrero de 2025 y la fecha de finalización del semestre es para el 21 de junio de 2025.
+                    
+                    De acuerdo con la Ley 115 de 1994 y el Decreto 1075 de 2015, CESDE es una Institución
+                    de Educación para el Trabajo y el Desarrollo Humano.
+                    
+                    
+                </p>
+
+                <p style="color: #555;">
+                    Este certificado se expide por Solicitud del Interesado.
+                </p>
+            </div>
+
+            <div class="signature-container">
+                <img id="certificateSignature" class="signature-preview" alt="Firma del Jefe de Registro y Control">
+                <div class="signature-line"></div>
+                <div style="color: #c71585;">SANDRA MILENA BÉTANCUR DEOSSA</div>
+                <div style="color: #db7093;">Jefe de Registro y Control</div>
+                <div style="color: #db7093;">C.C. 1.128.385.408</div>
+            </div>
+
+            <div class="footer">
+                <div>Luisa D. (604) 480 88 22 ext. 2301</div>
+                <div>Cesde.edu.co</div>
+                <div>Kilómetro 2 vía Puente Iglesias</div>
+                <div>Colombia - Antioquia – La Pintada</div>
+            </div>
+        </div>
+
+        <button id="descargarBtn" class="download-btn" style="display: none;">Descargar Certificado</button>
+    </div>
+
+    <script>
+        // Función para formatear fecha en formato "día de mes de año"
+        function formatDate(date) {
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return new Date(date).toLocaleDateString('es-ES', options);
+        }
+
+        // Manejar la subida de la imagen de firma
+        document.getElementById('firmaInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.match('image.*')) {
+                alert('Por favor seleccione un archivo de imagen');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const firmaPreview = document.getElementById('firmaPreview');
+                firmaPreview.src = event.target.result;
+                firmaPreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Generar certificado
+        document.getElementById('generarBtn').addEventListener('click', function() {
+            const nombre = document.getElementById('nombre').value;
+            const documento = document.getElementById('documento').value;
+            const firmaInput = document.getElementById('firmaInput');
+            
+            if (!nombre || !documento) {
+                alert('Por favor complete los campos obligatorios: Nombre y Documento');
+                return;
+            }
+            
+            if (firmaInput.files.length === 0) {
+                alert('Por favor suba una imagen de firma');
+                return;
+            }
+            
+            // Actualizar campos del certificado
+            document.getElementById('certNombre').textContent = nombre.toUpperCase();
+            document.getElementById('certDocumento').textContent = documento;
+            
+            // Copiar la firma al certificado
+            const firmaPreview = document.getElementById('firmaPreview');
+            const certificateSignature = document.getElementById('certificateSignature');
+            certificateSignature.src = firmaPreview.src;
+            certificateSignature.style.display = 'block';
+            
+            // Fecha de emisión (hoy)
+            document.getElementById('fechaCertificado').textContent = formatDate(new Date());
+            
+            // Mostrar certificado y botón de descarga
+            document.getElementById('certificado').style.display = 'block';
+            document.getElementById('descargarBtn').style.display = 'block';
+        });
+
+        // Descargar como PDF (usando la funcionalidad de impresión del navegador)
+        document.getElementById('descargarBtn').addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+</body>
+</html>
